@@ -15,8 +15,10 @@
 .env.*
 *.env
 
-# Dependency / build artifacts
+# Dependency / build artifacts (puppeteer used locally for screenshots only)
 node_modules/
+package.json
+package-lock.json
 dist/
 build/
 *.log
