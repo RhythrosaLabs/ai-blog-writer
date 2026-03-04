@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Blog Writer</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@websim/websim-socket": "https://esm.websim.com/@websim/websim-socket"
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-feather-alt"></i>
+                <h1>AI Blog Writer</h1>
+            </div>
+            <nav class="header-nav">
+                <button class="nav-btn active" id="writeTab">
+                    <i class="fas fa-edit"></i> Write
+                </button>
+                <button class="nav-btn" id="libraryTab">
+                    <i class="fas fa-book-open"></i> Library
+                </button>
+            </nav>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="saveBtn">
+                    <i class="fas fa-save"></i> Save Draft
+                </button>
+                <button class="btn btn-secondary" id="downloadHtmlBtn">
+                    <i class="fas fa-download"></i> Download HTML
+                </button>
+                <button class="btn btn-secondary" id="downloadPdfBtn">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" id="publishBtn">
+                    <i class="fas fa-rocket"></i> Publish
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content" id="writeView">
+            <div class="sidebar">
+                <div class="ai-panel">
+                    <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                    
+                    <div class="ai-section">
+                        <h4>Quick Actions</h4>
+                        <button class="ai-btn" id="generateIdeasBtn">
+                            <i class="fas fa-lightbulb"></i> Generate Ideas
+                        </button>
+                        <button class="ai-btn" id="generateTitleBtn">
+                            <i class="fas fa-heading"></i> Suggest Titles
+                        </button>
+                        <button class="ai-btn" id="improveTextBtn">
+                            <i class="fas fa-magic"></i> Improve Selected Text
+                        </button>
+                        <button class="ai-btn" id="generateImageBtn">
+                            <i class="fas fa-image"></i> Generate Image
+                        </button>
+                        <button class="ai-btn" id="generateFullBlogBtn">
+                            <i class="fas fa-magic"></i> Generate Full Blog
+                        </button>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>Writing Style</h4>
+                        <select id="toneSelect" class="form-control">
+                            <option value="professional">Professional</option>
+                            <option value="casual">Casual</option>
+                            <option value="formal">Formal</option>
+                            <option value="creative">Creative</option>
+                            <option value="persuasive">Persuasive</option>
+                        </select>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>Topic Input</h4>
+                        <input type="text" id="topicInput" class="form-control" placeholder="Enter a topic...">
+                        <button class="ai-btn full-width" id="expandTopicBtn">
+                            <i class="fas fa-expand-arrows-alt"></i> Expand Topic
+                        </button>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>AI Chat</h4>
+                        <div class="chat-container" id="chatContainer">
+                            <div class="chat-message ai-message">
+                                <i class="fas fa-robot"></i>
+                                <span>Hi! I'm your AI writing assistant. How can I help you with your blog post today?</span>
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" id="chatInput" class="form-control" placeholder="Ask me anything...">
+                            <button id="sendChatBtn" class="btn-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="editor-area">
+                <div class="editor-header">
+                    <input type="text" id="titleInput" class="title-input" placeholder="Enter your blog post title...">
+                    <div class="editor-stats">
+                        <span id="wordCount">0 words</span>
+                        <span id="charCount">0 characters</span>
+                    </div>
+                </div>
+
+                <div class="editor-toolbar">
+                    <button class="toolbar-btn" data-command="bold" title="Bold">
+                        <i class="fas fa-bold"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="italic" title="Italic">
+                        <i class="fas fa-italic"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="underline" title="Underline">
+                        <i class="fas fa-underline"></i>
+                    </button>
+                    <div class="toolbar-separator"></div>
+                    <button class="toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
+                        <i class="fas fa-list-ul"></i>
+                    </button>
+                    <button class="toolbar-btn" data-command="insertOrderedList" title="Numbered List">
+                        <i class="fas fa-list-ol"></i>
+                    </button>
+                    <div class="toolbar-separator"></div>
+                    <button class="toolbar-btn" id="insertImageBtn" title="Insert Image">
+                        <i class="fas fa-image"></i>
+                    </button>
+                </div>
+
+                <div class="editor-container">
+                    <div id="editor" class="editor" contenteditable="true" data-placeholder="Start writing your blog post here..."></div>
+                </div>
+
+                <div class="generated-content" id="generatedContent" style="display: none;">
+                    <h4>AI Generated Content</h4>
+                    <div class="generated-text" id="generatedText"></div>
+                    <div class="generated-actions">
+                        <button class="btn btn-primary" id="insertGeneratedBtn">Insert</button>
+                        <button class="btn btn-secondary" id="regenerateBtn">Regenerate</button>
+                        <button class="btn btn-secondary" id="dismissBtn">Dismiss</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="library-view" id="libraryView" style="display: none;">
+            <div class="library-header">
+                <h2><i class="fas fa-book-open"></i> Public Library</h2>
+                <p>Discover amazing blogs written by our community</p>
+            </div>
+            
+            <div class="library-filters">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search blogs...">
+                <select id="sortSelect" class="form-control">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="title">By Title</option>
+                </select>
+            </div>
+
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog cards will be populated here -->
+            </div>
+        </div>
+
+        <div class="blog-reader" id="blogReader" style="display: none;">
+            <div class="reader-header">
+                <button class="btn btn-secondary" id="backToLibraryBtn">
+                    <i class="fas fa-arrow-left"></i> Back to Library
+                </button>
+                <div class="reader-actions">
+                    <button class="btn btn-secondary" id="shareBtn">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                    <!-- Remove the like button as it's replaced by voting in the article -->
+                </div>
+            </div>
+            <article class="blog-article" id="blogArticle">
+                <!-- Blog content will be loaded here -->
+            </article>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <p>AI is thinking...</p>
+        </div>
+    </div>
+
+    <script type="module" src="utils.js"></script>
+    <script type="module" src="api.js"></script>
+    <script type="module" src="database.js"></script>
+    <script type="module" src="ui.js"></script>
+    <script type="module" src="blog-editor.js"></script>
+    <script type="module" src="blog-library.js"></script>
+    <script type="module" src="app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
