@@ -179,3 +179,8 @@ MIT License — see [LICENSE](LICENSE) for full text.
 ---
 
 <p align="center">Made with ❤️ by <strong>Rhythrosa Labs</strong></p>
+
+
+## Support
+
+If you find this useful, consider supporting via [PayPal](https://paypal.me/noodlebake)
