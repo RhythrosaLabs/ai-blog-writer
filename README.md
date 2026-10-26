@@ -2,7 +2,7 @@
 
 > A fully featured, AI-powered browser-based blog writing studio — create, edit, publish, and share long-form content in seconds.
 
-Built by **Rhythrosa Labs** on the [WebSim](https://websim.ai) platform. AI Blog Writer combines a rich-text editor, multiple AI writing tools, AI image generation, a community library, and PDF/HTML export in a single zero-setup web app.
+Built by **[Dan Sheils](https://rhythrosalabs.github.io/)** on the [WebSim](https://websim.ai) platform. AI Blog Writer combines a rich-text editor, multiple AI writing tools, AI image generation, a community library, and PDF/HTML export in a single zero-setup web app.
 
 ![AI Blog Writer – Write View](screenshots/app-write-view.png)
 
@@ -178,7 +178,7 @@ MIT License — see [LICENSE](LICENSE) for full text.
 
 ---
 
-<p align="center">Made with ❤️ by <strong>Rhythrosa Labs</strong></p>
+<p align="center">Built by <a href="https://rhythrosalabs.github.io/"><strong>Dan Sheils</strong></a></p>
 
 
 ## Support
